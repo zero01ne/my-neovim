@@ -6,7 +6,20 @@ return {
 	opts = {
 		bigfile = { enabled = true },
 		dashboard = { enabled = true },
-		explorer = { enabled = true },
+		explorer = {
+			enabled = true,
+			hidden = false,
+			ignored = false,
+			exclude = {
+				"__pycache__",
+				".git",
+				".mypy_cache",
+				".pytest_cache",
+				".venv",
+				"venv",
+				"node_modules",
+			},
+		},
 		indent = { enabled = true },
 		input = { enabled = true },
 		notifier = {
@@ -15,6 +28,10 @@ return {
 		},
 		picker = {
 			enabled = true,
+			defaults = {
+				hidden = true,
+				ignored = true,
+			},
 			on_attach = function(picker, map)
 				-- تضمین کن که Enter همیشه روی آیتم انتخاب‌شده عمل کنه
 				picker:map("i", "<CR>", picker.confirm)

@@ -1,64 +1,63 @@
 return {
-  "stevearc/conform.nvim",
-  opts = {},
-  config = function()
-    require("conform").setup({
-      -- Map of filetypes to formatters
-      formatters_by_ft = {
-        lua = { "stylua" },
-        go = { "goimports", "gofmt" },
-        rust = { "rustfmt", lsp_format = "fallback" },
+	"stevearc/conform.nvim",
+	opts = {},
+	config = function()
+		local conform = require("conform")
 
-        -- Dynamic Python handling:
-        -- If ruff is available, use it; otherwise, fallback to isort + black
-        python = function(bufnr)
-          if require("conform").get_formatter_info("ruff_format", bufnr).available then
-            return { "ruff_format" }
-          else
-            return { "isort", "black" }
-          end
-        end,
+		conform.setup({
+			formatters_by_ft = {
+				lua = { "stylua" },
+				go = { "goimports", "gofmt" },
+				rust = { "rustfmt", lsp_format = "fallback" },
 
-        -- Frontend & web formats
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        html = { "prettier" },
-        css = { "prettier" },
-        json = { "prettier" },
-        markdown = { "prettier" },
+				python = function(bufnr)
+					if conform.get_formatter_info("ruff_format", bufnr).available then
+						return { "ruff_format" }
+					else
+						return { "isort", "black" }
+					end
+				end,
 
-        -- Elixir
-        elixir = { "mix" },
+				javascript = { "prettier" },
+				javascriptreact = { "prettier" },
+				typescript = { "prettier" },
+				typescriptreact = { "prettier" },
+				html = { "prettier" },
+				css = { "prettier" },
+				json = { "prettier" },
+				markdown = { "prettier" },
+				elixir = { "mix" },
+				["*"] = { "codespell" },
+				["_"] = { "trim_whitespace" },
+			},
 
-        -- Apply to all filetypes
-        ["*"] = { "codespell" },
+			-- 🔧 تنظیم اختصاصی برای prettier:
+			formatters = {
+				prettier = {
+					command = "prettier",
+					args = {
+						"--stdin-filepath",
+						"$FILENAME",
+						"--tab-width",
+						"4", -- 👈 چهار فاصله
+						"--use-tabs",
+						"true",
+					},
+				},
+			},
 
-        -- Fallback if no specific formatter exists
-        ["_"] = { "trim_whitespace" },
-      },
+			default_format_opts = {
+				lsp_format = "fallback",
+			},
 
-      -- Default formatting options
-      default_format_opts = {
-        lsp_format = "fallback", -- Use LSP if no formatter is found
-      },
+			format_on_save = {
+				lsp_format = "fallback",
+				timeout_ms = 500,
+			},
 
-      -- Format on save
-      format_on_save = {
-        lsp_format = "fallback",
-        timeout_ms = 500,
-      },
-
-      -- Optional: async format after save (you can disable if not needed)
-      format_after_save = {
-        lsp_format = "fallback",
-      },
-
-      -- Logging & notifications
-      log_level = vim.log.levels.ERROR,
-      notify_on_error = true,
-      notify_no_formatters = true,
-    })
-  end,
+			log_level = vim.log.levels.ERROR,
+			notify_on_error = true,
+			notify_no_formatters = true,
+		})
+	end,
 }
