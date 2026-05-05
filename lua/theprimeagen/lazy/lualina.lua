@@ -3,7 +3,8 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
 		options = {
-			theme = "one_monokai",
+			-- theme = "one_monokai",
+			theme = "auto",
 			icons_enabled = true,
 			-- section_separators = { left = "", right = "" },
 			-- component_separators = { left = "", right = "" },
