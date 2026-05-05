@@ -8,8 +8,8 @@ return {
 		dashboard = { enabled = true },
 		explorer = {
 			enabled = true,
-			hidden = false,
-			ignored = false,
+			hidden = true,
+			ignored = true,
 			exclude = {
 				"__pycache__",
 				".git",
